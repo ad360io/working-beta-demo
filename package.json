@@ -2,7 +2,7 @@
     "name": "qchain-frontend",
     "version": "0.1.0",
     "private": true,
-    "homepage": "http://qchain.co/working-beta-qchain-demo/",
+    "homepage": "https://qchain.co/working-beta-qchain-demo/",
     "dependencies": {
         "@material-ui/core": "^1.2.1",
         "ajv": "^6.5.0",
