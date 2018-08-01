@@ -1,0 +1,9 @@
+.fa-pen-square {
+    color: rgb(83, 83, 83);
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.fa-pen-square:hover{
+    color: rgb(31, 31, 31);
+}

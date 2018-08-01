@@ -1,0 +1,15 @@
+.footer {
+    background-color: #222222;
+    padding: 25px 0;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: center;
+  }
+  
+footer p {
+    font-size: 13px;
+    margin: 0;
+}
+
+.footer-container {
+    margin-top: 5%;
+}

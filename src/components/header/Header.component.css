@@ -1,0 +1,7 @@
+.header-container {
+    padding: 0;
+    background-color: purple;
+    background:  -webkit-linear-gradient(90deg, #2655a0, #552072);
+    background:  linear-gradient(90deg, #2655a0, #552072);
+    z-index: 5;
+}

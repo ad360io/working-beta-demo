@@ -1,0 +1,27 @@
+.btn-login {
+    letter-spacing: 1px; 
+    padding: 12px 0 12px 4px; 
+    color: white;
+     width: 316px; 
+    font-size: 14px; font-weight: 400
+}
+
+.cover-login {
+    height: 100vh;
+    background-color: purple;
+    background: -webkit-linear-gradient(330deg, #7b4397, #be335a);
+    background: linear-gradient(330deg, #7b4397, #be335a);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+.card-login{
+    padding: 30px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    background-clip: padding-box;
+    background-color: rgba(255, 255, 255, 0.67);
+    box-shadow: 0 4px 30px 4px rgba(0, 0, 0, 0.5);
+    transition: 250ms;
+}

@@ -1,0 +1,8 @@
+.detailed-image {
+    width: 320px;
+    outline: 0;
+}
+
+img, img:focus, img:hover, img:active{
+    outline: none;
+}

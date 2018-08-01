@@ -1,0 +1,92 @@
+.grid-card-container {
+    margin-left: 2%;    
+    float: left;
+    position: relative;
+    margin-bottom: 2%;
+}
+
+.listing-card-container {
+    margin-left: 2%;    
+    float: left;
+    margin-bottom: 1%;
+}
+
+.listing-card-container:hover {
+    border: 0.5px solid grey;
+    cursor: pointer;
+}
+
+.price-tag {
+    font-size: 18px;
+    float: right;
+    text-align: right;
+    padding-right: 3%;
+    height: 30px;
+    width: 50%;
+    margin-top: 10px;
+    border-bottom: 2px solid #e8e8e8;
+    color: #4ac46f;
+}
+
+.poster-tag {
+    height: 30px;
+    font-size: 18px;
+    float:left;
+    width: 50%;
+    padding-left: 3%;
+    margin-top: 10px;
+    border-bottom: 2px solid #e8e8e8;
+}
+
+.btn-contact-action {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 12%;
+    font-stretch: normal;
+    letter-spacing: 1.2px;
+    text-align: center;
+    font-size: 22px;
+    padding-top: 9px;
+}
+
+.grid-img {
+    width: 40%;   
+    float: left;
+    margin-left: 1%;
+    margin-right: 2%;
+    padding-bottom: 50px;
+    padding-top: 30px;
+}
+
+.listing-img {
+    width: 120px;
+    float: left;
+    margin-left: 1%;
+    margin-right: 2%;
+    padding-bottom: 10px;
+    padding-top: 5px;
+}
+
+.grid-msg-container {
+    height: 322px;
+    font-stretch: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: 0rem;
+    font-size: 12px;
+}
+
+.listing-msg {
+    width: 55%;
+    vertical-align: middle;
+    display: inline-block;
+    line-height: 25px;
+}
+
+.listing-msg-container {
+    font-stretch: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: 0rem;
+    font-size: 12px;
+}

@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-stretch: semi-condensed;
+    letter-spacing: 0.18rem;
+    font-size: 15px;
+}
+
+a {
+    outline: 0;
+}

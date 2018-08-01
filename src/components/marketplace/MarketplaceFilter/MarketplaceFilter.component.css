@@ -1,0 +1,32 @@
+.dropdown {
+    margin-left: 25px;
+}
+
+.filter-title {
+    margin-top: 5%;
+    font-size: 20px;
+    text-align: center;
+}
+
+.btn-open-filter-drawer{
+    left: 0;
+    position: fixed;
+    -webkit-transform-origin: bottom left;
+       -moz-transform-origin: bottom left;
+        -ms-transform-origin: bottom left;
+         -o-transform-origin: bottom left;
+            transform-origin: bottom left;
+    -webkit-transform: rotate(90deg);
+       -moz-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+         -o-transform: rotate(90deg); 
+            transform: rotate(90deg);
+}
+
+.marketplace-filter-container {
+    font-stretch: normal;
+}
+
+.divider {
+    margin-top: 5%;
+}
