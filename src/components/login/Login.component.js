@@ -30,7 +30,7 @@ class Login extends Component {
                     <img className='logo' src={ qchain_logo } alt='Qchain' width='230px'/>
                     <br/><br/>
 
-                    <p style={{fontSize: 24+'px'}}>ALPHA <span style={{fontSize: 20+'px'}}>v0.58</span></p>
+                    <p style={{fontSize: 24+'px'}}>ALPHA <span style={{fontSize: 20+'px'}}>v0.59</span></p>
                     <br/>
 
                     <a className='btn btn-primary btn-login' id='btn-login' onClick={this.onLoginClickHandler}>GET STARTED</a>

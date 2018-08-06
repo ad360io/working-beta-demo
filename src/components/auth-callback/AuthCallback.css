@@ -2,6 +2,6 @@
     animation-name: fade-in;
     animation-duration: 0.8s;
     animation-fill-mode: forwards;
-    height: '100vh';
-    text-align:'center';
+    height: 100vh;
+    text-align: center;
 }
