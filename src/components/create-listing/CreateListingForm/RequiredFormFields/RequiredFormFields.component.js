@@ -43,7 +43,7 @@ const RequiredFormField = ({ modeFilter,
             <p className='control-label'>
                 Price per time unit (day/week/month/year)
                     </p>
-            <FormControl type='number' onChange={onPriceChange} style={{ width: '50%', float: 'left' }} />
+            <FormControl type='number' min='1' step='1' onChange={onPriceChange} style={{ width: '50%', float: 'left' }} />
             <FormControl componentClass='select' style={{ width: '50%' }} required>
                 <option value='day'>per day</option>
                 <option value='week'>per week</option>

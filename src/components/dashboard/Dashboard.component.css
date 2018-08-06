@@ -2,11 +2,11 @@
     animation-name: fade-in;
     animation-duration: 0.8s;
     animation-fill-mode: forwards;
+    margin-top: 130px;
 }
 
 .dashboard-grid {
     width: 100vw;
-    padding-top: 130px;
     padding-left: 0px;
     padding-right: 0px;
 }
@@ -29,6 +29,13 @@
     height: 100vh;
     text-align: center;
     padding-top: 20%;
+}
+
+.dashboard-alert {
+    margin-top: 140px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0px;
 }
 
 

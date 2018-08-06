@@ -29,6 +29,10 @@ import Button                         from '@material-ui/core/Button';
 
 import DetailedImageSlider from './DetailedImageSlider/DetailedImageSlider.component';
 
+import { Alert, FormControl } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
+import MakeOfferSection from './MakeOfferSection/MakeOfferSection.component';
+
 
 class DetailedListingPage extends Component {
 
@@ -38,13 +42,21 @@ class DetailedListingPage extends Component {
             fetched: false,
             error: null,
             listing: null,
-            width: window.innerWidth
+            width: window.innerWidth,
+            bought: false, 
+            processing: false,
+            emptyResponse: false,
+            offerAmount: -1,
+            actionInfo: '',
         }
 
         // Binding functions
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.decideImage = this.decideImage.bind(this);
-        this.handleCloseListing = this.handleCloseListing.bind(this);
+        this.inactivateListing = this.inactivateListing.bind(this);
+        this.handleBuyItNow = this.handleBuyItNow.bind(this);
+        this.loadDetail = this.loadDetail.bind(this);
+        this.createContractAfterBalanceCheck = this.createContractAfterBalanceCheck.bind(this);
     }
 
     componentDidMount() {
@@ -71,18 +83,33 @@ class DetailedListingPage extends Component {
             return default_ph;
         }
     }
-    
+
     componentWillMount() {
+        this.loadDetail();
+    }
+
+    loadDetail() {
         // call on start load to get data
-        const listingURL = `https://qchain-marketplace-postgrest.herokuapp.com/listing?id=eq.${this.props.match.params.id}`;
-        axios.get(listingURL)
+        const listingURL = `https://qchain-marketplace-postgrest.herokuapp.com/detailed_listing_view?id=eq.${this.props.match.params.id}`;
+        const config = {
+            headers: {Authorization: "Bearer " + localStorage.getItem('id_token')}
+        };
+        axios.get(listingURL, config)
             .then((response) => {
-                document.title = `${response.data[0].name} - Qchain`;
-                this.setState({
-                    ...this.state,
-                    fetched: true,
-                    listing: response.data[0]
-                })
+                if(response.data.length < 1){
+                    this.setState({
+                        ...this.state,
+                        emptyResponse: true,
+                        fetched: true
+                    })
+                }else {
+                    document.title = `${response.data[0].name} - Qchain`;
+                    this.setState({
+                        ...this.state,
+                        fetched: true,
+                        listing: response.data[0]
+                    })
+                } 
             })
             .catch((err) => {
                 this.setState({
@@ -93,53 +120,152 @@ class DetailedListingPage extends Component {
         })
     }
 
-    handleCloseListing() {
-        this.props.closeListing();
-        document.title = 'Qchain - Marketplace';
+    handleBuyItNow() {
+        // check balance
+        this.setState({
+            ...this.state,
+            processing: true,
+        })
+        const walletURL = `https://qchain-marketplace-postgrest.herokuapp.com/wallet_view`;
+        const config = {
+            headers: {Authorization: "Bearer " + localStorage.getItem('id_token')}
+        };
+        
+        axios.get(walletURL, config)
+            .then((response) => {
+                //success, response.data[0]
+                if(this.state.listing.currency === 'EQC'){
+                    if(response.data[0].eqc_balance >= this.state.listing.price){
+                        this.createContractAfterBalanceCheck(response.data[0].eqc_balance)
+                    }else{
+                        this.setState({
+                            ...this.state,
+                            processing: false,
+                            actionInfo: 'Insufficient EQC on your account'
+                        })
+                    }
+                }else{
+                    if(response.data[0].xqc_balance >= this.state.listing.price){
+                        this.createContractAfterBalanceCheck(response.data[0].xqc_balance)
+                    }else{
+                        this.setState({
+                            ...this.state,
+                            processing: false,
+                            actionInfo: 'Insufficient XQC on your account'
+                        })
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log("BUY IT NOW ERR");
+                console.log(err);                
+        })
+    }
+
+    createContractAfterBalanceCheck(balance){
+        const listingURL = `https://qchain-marketplace-postgrest.herokuapp.com/contract`;
+        const config = {
+            headers: {Authorization: "Bearer " + localStorage.getItem('id_token')}
+        };
+        const payload = {
+            name: this.state.listing.name,
+            advertiser: localStorage.getItem('role'),
+            publisher: this.state.listing.owner,
+            start_date: this.state.listing.date_added,
+            end_date: this.state.listing.expiration_date,
+            currency: this.state.listing.currency,
+            payout_cap: this.state.listing.price,
+            contentspacelisting: this.state.listing.id,
+            contentlisting: null
+        }
+        axios.post(listingURL, payload, config)
+            .then(() => {
+                //success, toggle isactive on this listing to false
+                this.setState({
+                    ...this.state,
+                    bought: true
+                })
+                this.inactivateListing();
+                this.makePayment(balance);
+            })
+            .catch((err) => {
+                console.log("BUY IT NOW ERR");
+                console.log(err);                
+        })
+    }
+
+    inactivateListing() {
+        const listingURL = `https://qchain-marketplace-postgrest.herokuapp.com/listing?id=eq.${this.state.listing.id}`;
+        const config = {
+            headers: {Authorization: "Bearer " + localStorage.getItem('id_token')}
+        };
+        const payload = {
+            isactive: false
+        }
+        axios.patch(listingURL, payload, config)
+            .then(() => {
+                //success, toggle isactive on this listing to false
+            })
+            .catch((err) => {
+                console.log("INACTIVATE ERR");
+                console.log(err);                
+        })
+    }
+
+    makePayment(existingBalance) {
+        const listingURL = `https://qchain-marketplace-postgrest.herokuapp.com/wallet_view`;
+        const config = {
+            headers: {Authorization: "Bearer " + localStorage.getItem('id_token')}
+        };
+        const payload = (this.state.listing.currency === 'EQC')
+                            ? { eqc_balance: (existingBalance - this.state.listing.price) }
+                            : { xqc_balance: (existingBalance - this.state.listing.price) }
+        axios.patch(listingURL, payload, config)
+            .then(() => {
+                //success, toggle isactive on this listing to false
+            })
+            .catch((err) => {
+                console.log("INACTIVATE ERR");
+                console.log(err);                
+        })
     }
 
     render() {
         // console.log(this.props.match.params.id)
         // make a request to get detailed listing info using ID
         // parse info onto the page
-        return <div className='detailed-listing-container'>
-            {
-                (this.state.fetched
-                    ? ( this.state.listing.classtype === "request" 
-                        ? <DetailedRequestListing 
-                                listing={this.state.listing}
-                                decideImage={this.decideImage}
-                          />
-                        : <DetailedContentSpaceListing 
-                                listing={this.state.listing} 
-                                decideImage={this.decideImage}
-                          />
-                      )
-                    : null
-                )
+        if(this.state.fetched && !this.state.emptyResponse) {
+            if (this.state.listing.classtype === "request") {
+                return <div className='detailed-listing-container'>
+                    <DetailedRequestListing 
+                        listing={this.state.listing}
+                        decideImage={this.decideImage}
+                    />
+                </div>
+            }else {
+                return <div className='detailed-listing-container'>
+                    <DetailedContentSpaceListing 
+                        listing={this.state.listing} 
+                        decideImage={this.decideImage}
+                        onBuy={this.handleBuyItNow}
+                        bought={this.state.bought}
+                        processing={this.state.processing}
+                        issue={this.state.actionInfo}
+                    />
+                </div>
             }
-        </div>
+        }else if (this.state.fetched && this.state.emptyResponse) {
+            return <Redirect to='/marketplace' />
+        }else {
+            return <div></div>
+        }
     }
 }
 
-const DetailedRequestListing = ({ listing, decideImage }) => (
+const DetailedRequestListing = ({ listing, decideImage, onOfferChange, badOffer, makeOfferClick, bought, processing }) => (
     
 
     <div className='detailed-listing-renderer'>
-        {
-            /* ********************  SCHEMA OF A REQUEST LISTING ********************
-                "id" : #,
-                "type" : "",
-                "requestor": "",
-                "currency": "",
-                "marketingType": "",
-                "medium": "",
-                "contentTopic": "",
-                "images": "",
-                "ask_date_from": "",
-                "requestDescription": "" 
-            */
-        }
         <div className='detailed-image-container'>
             <Card>
                 <CardText>
@@ -161,11 +287,20 @@ const DetailedRequestListing = ({ listing, decideImage }) => (
             <h1>{listing.name}</h1>
             </CardTitle>
             <Divider />
-            <CardText>
-            <div>Marketing Type: {listing.ad_format} {listing.classtype}</div>
-            <div>Marketing Medium: {listing.medium}</div>
+            <CardText className='listing-details-text'>
+            <div className='details-text'>
+                <p>
+                    Ad Format: {listing.ad_format} {listing.classtype} 
+                </p>
+                <p>
+                    Marketing Medium: {listing.medium}
+                </p>
+                
+            </div>
+            <br /> 
+                <MakeOfferSection listing={listing}/>
             <br />
-            <div>{listing.description}</div>
+            <div className='details-text'>{listing.description}</div>
             </CardText>
         </Card>
         
@@ -173,7 +308,7 @@ const DetailedRequestListing = ({ listing, decideImage }) => (
             <Card>
                 <CardTitle>
                     <h3>Requestor Info:</h3>
-                    <h4>{listing.advertiser} trading in {listing.currency}</h4>
+                    <span>{listing.owner_name} trading in {listing.currency}</span>
                 </CardTitle>
                 <CardText>
                 <div>Ask Date: {listing.date_added}</div>
@@ -189,25 +324,8 @@ const DetailedRequestListing = ({ listing, decideImage }) => (
     </div>
 )
 
-const DetailedContentSpaceListing = ({ listing, decideImage }) => (
+const DetailedContentSpaceListing = ({ listing, decideImage, onBuy, bought, processing, issue}) => (
     <div className='detailed-listing-renderer'>
-        {
-            /* ********************  SCHEMA OF A CONTENT SPACE LISTING ********************
-                "id" : #,
-                "type" : "",
-                "creator": "",
-                "ask_date_from": "",
-                "ask_date_to": "",
-                "marketingType": "",
-                "medium": "",
-                "contentTopic": "",
-                "pricing": #,
-                "timeUnit": "",
-                "currency": "",
-                "listingDescription": "",
-                "referralURI": ""
-            */
-        }
         <div className='detailed-image-container'>
             <Card>
                 <CardText>
@@ -233,7 +351,7 @@ const DetailedContentSpaceListing = ({ listing, decideImage }) => (
             <CardText className='listing-details-text'>
             <div className='details-text'>
                 <p>
-                    Marketing Type: {listing.ad_format} {listing.classtype} 
+                    Ad Format: {listing.ad_format} {listing.classtype} 
                 </p>
                 <p>
                     Marketing Medium: {listing.medium}
@@ -242,10 +360,27 @@ const DetailedContentSpaceListing = ({ listing, decideImage }) => (
             </div>
             
             <br />
-            <div className='buy-section'>
-                <div className='price-section'>Price: {listing.price} {listing.currency}</div>
-                <Button className='buy-button' variant='outlined' color='primary'>Buy It Now</Button>
-            </div>
+            
+                {
+                    (bought)
+                    ? <Alert bsStyle='success'>Congratulations! You've bought this listing!</Alert>
+                    :<div className='buy-section'>
+                        <div className='price-section'>Price: {listing.price} {listing.currency}</div>
+                            <Button className='buy-button' 
+                                onClick={()=>onBuy()} 
+                                variant='outlined' 
+                                color='primary'
+                                disabled={processing || issue.length > 0}
+                            >
+                                {
+                                    (issue.length > 0 )
+                                        ? issue
+                                        : 'Buy It Now!'
+                                }
+                            </Button> 
+                    </div>
+                }
+            
             <br />
             <div className='details-text'>{listing.description}</div>
             </CardText>
@@ -255,7 +390,7 @@ const DetailedContentSpaceListing = ({ listing, decideImage }) => (
             <Card>
                 <CardTitle>
                     <h3>Creator Info:</h3>
-                    <h4>{listing.publisher} trading in {listing.currency}</h4>
+                    <h4>{listing.owner_name} trading in {listing.currency}</h4>
                 </CardTitle>
                 <CardText>
                 

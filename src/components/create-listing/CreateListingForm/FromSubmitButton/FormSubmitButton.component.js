@@ -29,10 +29,10 @@ class FormSubmitButton extends Component{
         });
 
         const listingURL = "https://qchain-marketplace-postgrest.herokuapp.com/listing";
-        var config = {
-            headers: {Authorization: "Bearer " + localStorage.getItem('id_token')}
+        const config = {
+            headers: { Authorization: "Bearer " + localStorage.getItem('id_token')}
         };
-        axios.post(listingURL, config, this.createPayload())
+        axios.post(listingURL, this.createPayload(), config)
                     .then(() => {
                         this.setState({
                             ...this.state,
@@ -40,6 +40,7 @@ class FormSubmitButton extends Component{
                         })
                     })
                     .catch((err) => {
+                        console.log(err);
                         this.setState({
                             ...this.state,
                             finished: true,
@@ -62,7 +63,9 @@ class FormSubmitButton extends Component{
                 ad_format: this.props.advertiserForm.adFormat,
                 classtype: "request",
                 advertiser: localStorage.getItem('role'),
-                owner: localStorage.getItem('role')
+                publisher: 'none',
+                owner: localStorage.getItem('role'),
+                isactive: true
             } 
         }else {
             return {
@@ -76,6 +79,7 @@ class FormSubmitButton extends Component{
                 currency: this.props.currencyFilter,
                 ad_format: this.props.publisherForm.adFormat,
                 classtype: "listing",
+                advertiser: 'none',
                 publisher: localStorage.getItem('role'),
                 owner: localStorage.getItem('role')
             }

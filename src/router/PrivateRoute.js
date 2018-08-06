@@ -19,8 +19,8 @@ const PrivateRoute = ({ component: Component, auth: Auth, ...rest }) => (
     <Route
         {...rest}
         render={props => {
-            const { isAuthenticated } = true;
-            return true
+            const { isAuthenticated } = Auth;
+            return isAuthenticated()
                         ? PrivateContent(props, Component, Auth)
                         : <Redirect to={{pathname: '/'}}/>
         }}

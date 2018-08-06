@@ -93,14 +93,14 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const TestServerURL = "https://qchain-marketplace-postgrest.herokuapp.com/listing";
+    const TestServerURL = "https://qchain-marketplace-postgrest.herokuapp.com/detailed_listing_view";
     return {
         onStartLoadData: (idToken) => {
-            var config = {
+            const config = {
                 headers: {Authorization: "Bearer " + localStorage.getItem('id_token')}
             };
             dispatch((dispatch) => {
-                console.log(idToken);
+                console.log(localStorage.getItem('id_token'));
                 dispatch(fetch_MarketplaceData_Pending())
                 axios.get(TestServerURL, config)
                     .then((response) => {

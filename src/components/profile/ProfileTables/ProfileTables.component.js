@@ -12,8 +12,9 @@ import './ProfileTables.component.css';
 Children Components
 */
 import ActiveListing  from './ActiveListing/ActiveListing.component';
+import ActiveRequest  from './ActiveRequest/ActiveRequest.component';
 import ActiveContract from './ActiveContract/ActiveContract.component';
-import InviteList     from './InviteList/InviteList.component';
+import OfferList      from './OfferList/OfferList.component';
 
 /*
 React Bootstrap
@@ -25,7 +26,7 @@ class ProfileTables extends Component {
     constructor(props){
         super(props);
         this.state = {
-            activeTabKey: 1
+            activeTabKey: 0
         }
 
         this.getListingType = this.getListingType.bind(this);
@@ -49,18 +50,21 @@ class ProfileTables extends Component {
                     style={{paddingLeft: '10%', paddingRight:'10%'}}
                     className='table-tabs'
                 >
-                
+
+                <Tab eventKey={0} title='Offers'>
+                    <OfferList activeTabKey={this.state.activeTabKey}/>
+                </Tab>
                 <Tab eventKey={1} title='Active Listing'>
-                    <ActiveListing listingType={this.getListingType()} />
+                    <ActiveListing activeTabKey={this.state.activeTabKey} />
+                </Tab>
+                <Tab eventKey={2} title='Active Request'>
+                    <ActiveRequest activeTabKey={this.state.activeTabKey} />
+                </Tab>
+                <Tab eventKey={3} title='Active Contracts'>
+                    <ActiveContract activeTabKey={this.state.activeTabKey} />
                 </Tab>
 
-                <Tab eventKey={2} title='Active Contracts'>
-                    <ActiveContract listingType={this.getListingType()} />
-                </Tab>
-
-                <Tab eventKey={3} title='Invites'>
-                    <InviteList />
-                </Tab>
+                
             </Tabs>  
         </div>
     }

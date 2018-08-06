@@ -1,58 +1,96 @@
 /*
 Core Libs
 */
-import React from 'react';
+import React, { Component } from 'react';
+import axios                from 'axios';
 
 /**
- * Active Contract Component
- * @param {string} listingType passed as props to decide the label
+ * ActiveContract Component
  */
-const ActiveContract = ({listingType}) => (
-    <div className='active-contract-container'>
-        <div className='table-responsive' style={{height: '320px', margin:'2%'}}>
-            <table className='table table-bordered mb-0'>
-                <thead className='thead-default'>
-                <tr>
-                    <th>User</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                </tr>
-                </thead>
-                
-                    {
-                       sampleTableContent()
-                    }
-                
-                
-            </table>
-        </div>
-    </div>
-)
-
-/**
- * Dynamically generate dummy data
- */
-const sampleTableContent = () => {
-    let samples = [];
-    for(let i = 0; i < 6; i++){
-        samples.push(
-            (
-                <tr key={'tr'+i}>
-                    <td>someCoolUser123</td>
-                    <td>2018-05-14</td>
-                    <td>2018-11-14</td>
-                </tr>
-            )
-        )
+class ActiveContract extends Component {
+    
+    constructor(props){
+        super(props);
+        this.state = {
+            finished: false,
+            err: null,
+            activeListing: []
+        }
+        this.loadData();
+        this.loadData = this.loadData.bind(this);
     }
 
-    return <tbody>
-        {
-            samples.map((sample)=>{
-                return sample
-            })
-        }
-        </tbody>
+    componentWillReceiveProps() {
+        this.loadData();
+    }
+
+    loadData() {
+        const activeContractURL = "https://qchain-marketplace-postgrest.herokuapp.com/my_active_contract_view";
+        const config = {
+            headers: { Authorization: "Bearer " + localStorage.getItem('id_token')}
+        };
+        axios.get(activeContractURL, config)
+                    .then((response) => {
+                        this.setState({
+                            ...this.state,
+                            finished: true,
+                            activeContract: response.data
+                        })
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        this.setState({
+                            ...this.state,
+                            finished: true,
+                            err: err
+                        })
+                    })
+    }
+
+    render() { 
+        return <div className='active-listing-container'>
+            <div className='table-responsive' style={{height: '320px', margin:'2%'}}>
+                {
+                    (this.state.finished && this.state.err === null && this.state.activeContract.length === 0)
+                        ? (<p style={{textAlign: 'center'}}>There is currently no active contract...</p>)
+                        : null
+                }
+
+                {
+                    (this.state.finished && this.state.err === null && this.state.activeContract.length > 0)
+                        ? (<table className='table table-bordered mb-0'>
+                                <thead className='thead-default'>
+                                <tr>
+                                    <th>Contract Title</th>
+                                    <th>Advertiser</th>
+                                    <th>Publisher</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Price</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        this.state.activeContract.map((contract, i)=>{
+                                            return (<tr key={'contracttr' + i}>
+                                                <td>{contract.name}</td>
+                                                <td>{contract.advertiser_name}</td>
+                                                <td>{contract.publisher_name}</td>
+                                                <td>{contract.start_date}</td>
+                                                <td>{contract.end_date}</td>
+                                                <td>{contract.payout_cap} {contract.currency}</td>
+                                            </tr>)
+                                        })
+                                    }
+                                </tbody>
+                                
+                            </table>
+                            )
+                        : null
+                }
+            </div>
+        </div>
+    }
 }
 
 

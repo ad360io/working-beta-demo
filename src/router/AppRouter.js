@@ -36,7 +36,6 @@ const auth = new Auth(store);
 const handleAuthentication = (nextState, replace, history) => {
   if (/access_token|id_token|error/.test(nextState.location.hash)) {
     auth.handleAuthentication(history);
-    auth.setHistory(history);
   }
 }
 
@@ -49,8 +48,9 @@ const handleAuthentication = (nextState, replace, history) => {
  */
 const AppRouter = () => (
 
-      <BrowserRouter basename="working-beta-qchain-demo/">
+      <BrowserRouter>
         <Switch>    
+            <Route exact path='/' render={(props)=><Login auth={auth} {...props}/>} />
             <PrivateRoute exact path='/dashboard'    component={ Dashboard }           auth={auth} />
             <PrivateRoute exact path='/marketplace'  component={ Marketplace }         auth={auth} />
             <PrivateRoute exact path='/create'       component={ CreateListing }       auth={auth} />

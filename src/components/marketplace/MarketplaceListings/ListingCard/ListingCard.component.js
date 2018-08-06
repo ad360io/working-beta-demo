@@ -163,11 +163,7 @@ class ListingCard extends Component {
     }
 
     decideContactInfo() {
-        if(this.props.modeFilter === 'Advertiser'){
-            return this.props.listing.publisher
-        }else {
-            return this.props.listing.advertiser
-        }
+        return this.props.listing.owner_name;
     }
 
     decideDescription() {
