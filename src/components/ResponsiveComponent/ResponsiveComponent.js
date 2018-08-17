@@ -29,7 +29,7 @@ export function withWindowWidthListener(WrappedComponent) {
         }
 
         render() {
-            return <WrappedComponent width={this.state.width}/>
+            return <WrappedComponent width={this.state.width} {...this.props} />
         }
     }
 }

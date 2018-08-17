@@ -9,6 +9,8 @@ exports.default = void 0;
 
 var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/builtin/objectSpread"));
 
+var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/builtin/typeof"));
+
 var _warning = _interopRequireDefault(require("warning"));
 
 var _deepmerge = _interopRequireDefault(require("deepmerge"));
@@ -21,6 +23,7 @@ function arrayMerge(destination, source) {
 
 function getStylesCreator(stylesOrCreator) {
   var themingEnabled = typeof stylesOrCreator === 'function';
+  process.env.NODE_ENV !== "production" ? (0, _warning.default)((0, _typeof2.default)(stylesOrCreator) === 'object' || themingEnabled, ['Material-UI: the first argument provided to withStyles() is invalid.', 'You need to provide a function generating the styles or a styles object.'].join('\n')) : void 0;
 
   function create(theme, name) {
     var styles = themingEnabled ? stylesOrCreator(theme) : stylesOrCreator;

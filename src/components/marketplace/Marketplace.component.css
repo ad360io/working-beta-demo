@@ -1,5 +1,5 @@
 .marketplace-container {
-    margin-top: 130px; /* Match header component*/
+    margin-top: 64px; /* Match header component*/
     position: relative;
     animation-name: fade-in;
     animation-duration: 0.8s;
@@ -8,4 +8,10 @@
     height: auto;
     min-height: 100vh;
     margin-bottom: 5%;
+}
+
+.loading-container {
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
 }

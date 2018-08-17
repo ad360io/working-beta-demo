@@ -220,6 +220,7 @@ class CreateListingForm extends Component {
                                             <Button 
                                                 variant='outlined'
                                                 onClick={this.onFormResetClick}
+                                                style={{marginLeft: '10px'}}
                                             >
                                                 Yes!
                                             </Button>

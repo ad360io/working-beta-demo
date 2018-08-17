@@ -4,7 +4,7 @@
 
 .filter-title {
     margin-top: 5%;
-    font-size: 20px;
+    font-weight: 500;
     text-align: center;
 }
 
@@ -25,6 +25,7 @@
 
 .marketplace-filter-container {
     font-stretch: normal;
+    font-weight: 300;
 }
 
 .divider {

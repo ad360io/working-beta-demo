@@ -12,9 +12,7 @@ var _keycode = _interopRequireDefault(require("keycode"));
 
 var _warning = _interopRequireDefault(require("warning"));
 
-var _contains = _interopRequireDefault(require("dom-helpers/query/contains"));
-
-var _ownerDocument = _interopRequireDefault(require("dom-helpers/ownerDocument"));
+var _ownerDocument = _interopRequireDefault(require("../utils/ownerDocument"));
 
 //  weak
 var internal = {
@@ -29,7 +27,7 @@ function detectFocusVisible(instance, element, callback) {
   instance.focusVisibleTimeout = setTimeout(function () {
     var doc = (0, _ownerDocument.default)(element);
 
-    if (internal.focusKeyPressed && (doc.activeElement === element || (0, _contains.default)(element, doc.activeElement))) {
+    if (internal.focusKeyPressed && (doc.activeElement === element || element.contains(doc.activeElement))) {
       callback();
     } else if (attempt < instance.focusVisibleMaxCheckTimes) {
       detectFocusVisible(instance, element, callback, attempt + 1);

@@ -4,4 +4,7 @@
     background:  -webkit-linear-gradient(90deg, #2655a0, #552072);
     background:  linear-gradient(90deg, #2655a0, #552072);
     z-index: 5;
+    animation-name: fade-in;
+    animation-fill-mode: forwards;
+    animation-duration: 0.2s;
 }

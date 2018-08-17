@@ -29,7 +29,7 @@ import Button                         from '@material-ui/core/Button';
 
 import DetailedImageSlider from './DetailedImageSlider/DetailedImageSlider.component';
 
-import { Alert, FormControl } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import MakeOfferSection from './MakeOfferSection/MakeOfferSection.component';
 
@@ -311,7 +311,7 @@ const DetailedRequestListing = ({ listing, decideImage, onOfferChange, badOffer,
                     <span>{listing.owner_name} trading in {listing.currency}</span>
                 </CardTitle>
                 <CardText>
-                <div>Ask Date: {listing.date_added}</div>
+                <div>Ask Date: {listing.date_added.slice(0,10)}</div>
                 </CardText>
             </Card>
             <div className='detailed-listing-action-section'>
@@ -394,7 +394,7 @@ const DetailedContentSpaceListing = ({ listing, decideImage, onBuy, bought, proc
                 </CardTitle>
                 <CardText>
                 
-                <div>Promotion Duration: <br/> {listing.date_added} - {listing.expiration_date}</div>
+                <div>Promotion Duration: <br/> {listing.date_added.slice(0,10)} to {listing.expiration_date}</div>
                 </CardText>
             </Card>
             <div className='detailed-listing-action-section'>

@@ -9,7 +9,8 @@ React Bootstrap Components
 */
 import { Button }                  from 'react-bootstrap';
 import { Popover, OverlayTrigger } from 'react-bootstrap';
-import { Alert }                   from 'react-bootstrap';
+
+import Divider from 'material-ui/Divider';
 
 
 /**
@@ -77,8 +78,8 @@ class OfferList extends Component {
                                 </thead>
                                 <tbody>
                                 {
-                                    this.state.activeOffers.map((offer) => {
-                                        return <OfferRenderer offer={offer} refreshData={this.loadData} />
+                                    this.state.activeOffers.map((offer, i) => {
+                                        return <OfferRenderer offer={offer} refreshData={this.loadData} key={'offer'+i}/>
                                     })
                                 }      
                                 </tbody>
@@ -242,9 +243,12 @@ class OfferRenderer extends Component {
         return (
                     <Popover title={ this.props.offer.sender_name + ' sent you an offer!'} id={'popover'+this.props.offer.id}>
                         <strong>Ad Format</strong> {this.props.offer.ad_format} <br/>
+                        <Divider/>
                         <strong>Start Date</strong> {this.props.offer.start_date} <br/>
                         <strong>End Date</strong> {this.props.offer.end_date} <br/>
+                        <Divider/>
                         <strong>Pricing</strong> {this.props.offer.price} {this.props.offer.currency} <br/>
+                        <Divider/>
                         <strong>Message</strong><br/>
                         {this.props.offer.message}
                     </Popover>

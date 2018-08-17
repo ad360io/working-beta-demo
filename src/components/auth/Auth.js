@@ -31,10 +31,9 @@ export default class Auth {
     auth0 = new auth0.WebAuth({
         domain: `${Auth0Config.domain}`,
         clientID: `${Auth0Config.clientID}`,
-        redirectUri: `http://localhost:4200/#/auth-callback`,
+        redirectUri: `${window.location.protocol}//${window.location.host}/auth-callback`,
         responseType: 'token',
         scope: 'openid email profile role'
-
     });
 
     login() {
@@ -66,7 +65,6 @@ export default class Auth {
             type: 'SET_ID_TOKEN',
             value: authResult.idToken
         })
-
         propsHistory.replace('/dashboard');
         propsHistory.push('/dashboard')
         this.scheduleRenewal();

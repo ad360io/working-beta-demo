@@ -30,6 +30,7 @@ class MakeOfferSection extends Component {
         this.handleHideModal = this.handleHideModal.bind(this);
         this.onResetRangeClick = this.onResetRangeClick.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
+        this.handleMessageChange = this.handleMessageChange.bind(this);
     }
 
     handleMakeOffer() {
@@ -49,7 +50,8 @@ class MakeOfferSection extends Component {
             receiver: this.props.listing.owner,
             owner: this.props.listing.owner,
             start_date: this.state.offerDateRange.from,
-            end_date: this.state.offerDateRange.to
+            end_date: this.state.offerDateRange.to,
+            message: this.state.offerMessage
         }
         axios.post(offerURL, payload, config)
             .then(() => {

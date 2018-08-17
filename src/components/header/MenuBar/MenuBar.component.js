@@ -56,7 +56,7 @@ class MenuBar extends Component {
 
         return (
             <div>
-            <Navbar collapseOnSelect fixedTop className='menu-container'>
+            <Navbar collapseOnSelect className='menu-container'>
 
                 {/*Start of Logo section */}
                 <Navbar.Header className='menu-header'>

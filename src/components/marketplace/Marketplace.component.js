@@ -77,7 +77,7 @@ class Marketplace extends Component {
                 </div>
             </div>
         }else{
-            return <CircularProgress size={100} thickness={6} />
+            return <div className='loading-container'><CircularProgress size={100} thickness={6} style={{marginTop: '40vh'}} /> </div>
         }
     }
     
@@ -100,7 +100,6 @@ const mapDispatchToProps = (dispatch) => {
                 headers: {Authorization: "Bearer " + localStorage.getItem('id_token')}
             };
             dispatch((dispatch) => {
-                console.log(localStorage.getItem('id_token'));
                 dispatch(fetch_MarketplaceData_Pending())
                 axios.get(TestServerURL, config)
                     .then((response) => {

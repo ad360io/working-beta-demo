@@ -43,6 +43,8 @@ var ns = _interopRequireWildcard(require("react-jss/lib/ns"));
 
 var _jssPreset = _interopRequireDefault(require("./jssPreset"));
 
+var _mergeClasses = _interopRequireDefault(require("./mergeClasses"));
+
 var _createMuiTheme = _interopRequireDefault(require("./createMuiTheme"));
 
 var _themeListener = _interopRequireDefault(require("./themeListener"));
@@ -111,7 +113,6 @@ var withStyles = function withStyles(stylesOrCreator) {
 
         (0, _classCallCheck2.default)(this, WithStyles);
         _this = (0, _possibleConstructorReturn2.default)(this, (WithStyles.__proto__ || Object.getPrototypeOf(WithStyles)).call(this, props, context));
-        _this.state = {};
         _this.disableStylesGeneration = false;
         _this.jss = null;
         _this.sheetOptions = null;
@@ -119,6 +120,7 @@ var withStyles = function withStyles(stylesOrCreator) {
         _this.stylesCreatorSaved = null;
         _this.theme = null;
         _this.unsubscribeId = null;
+        _this.state = {};
         _this.jss = _this.context[ns.jss] || jss;
         var muiThemeProviderOptions = _this.context.muiThemeProviderOptions;
 
@@ -200,8 +202,6 @@ var withStyles = function withStyles(stylesOrCreator) {
       }, {
         key: "getClasses",
         value: function getClasses() {
-          var _this3 = this;
-
           // Tracks if either the rendered classes or classes prop has changed,
           // requiring the generation of a new finalized classes object.
           var generate = false;
@@ -222,20 +222,12 @@ var withStyles = function withStyles(stylesOrCreator) {
           }
 
           if (generate) {
-            if (this.props.classes) {
-              this.cacheClasses.value = (0, _objectSpread2.default)({}, this.cacheClasses.lastJSS, Object.keys(this.props.classes).reduce(function (accumulator, key) {
-                process.env.NODE_ENV !== "production" ? (0, _warning.default)(_this3.cacheClasses.lastJSS[key] || _this3.disableStylesGeneration, ["Material-UI: the key `".concat(key, "` ") + "provided to the classes property is not implemented in ".concat((0, _getDisplayName.default)(Component), "."), "You can only override one of the following: ".concat(Object.keys(_this3.cacheClasses.lastJSS).join(','))].join('\n')) : void 0;
-                process.env.NODE_ENV !== "production" ? (0, _warning.default)(!_this3.props.classes[key] || typeof _this3.props.classes[key] === 'string', ["Material-UI: the key `".concat(key, "` ") + "provided to the classes property is not valid for ".concat((0, _getDisplayName.default)(Component), "."), "You need to provide a non empty string instead of: ".concat(_this3.props.classes[key], ".")].join('\n')) : void 0;
-
-                if (_this3.props.classes[key]) {
-                  accumulator[key] = "".concat(_this3.cacheClasses.lastJSS[key], " ").concat(_this3.props.classes[key]);
-                }
-
-                return accumulator;
-              }, {}));
-            } else {
-              this.cacheClasses.value = this.cacheClasses.lastJSS;
-            }
+            this.cacheClasses.value = (0, _mergeClasses.default)({
+              baseClasses: this.cacheClasses.lastJSS,
+              newClasses: this.props.classes,
+              Component: Component,
+              noBase: this.disableStylesGeneration
+            });
           }
 
           return this.cacheClasses.value;
@@ -271,6 +263,7 @@ var withStyles = function withStyles(stylesOrCreator) {
 
             if (process.env.NODE_ENV !== 'production' && !meta) {
               meta = (0, _getDisplayName.default)(Component);
+              process.env.NODE_ENV !== "production" ? (0, _warning.default)(typeof meta === 'string', ['Material-UI: the component displayName is invalid. It needs to be a string.', "Please fix the following component: ".concat(Component, ".")].join('\n')) : void 0;
             }
 
             var sheet = this.jss.createStyleSheet(styles, (0, _objectSpread2.default)({

@@ -23,18 +23,17 @@ import CircularProgress from 'material-ui/CircularProgress';
 /*
 Networking
 */
-import axios from 'axios';
+//import axios from 'axios';
 
 /*
 Actions
 */
-import { fetch_DashboardData_Fulfilled, fetch_DashboardData_Pending, fetch_DashboardData_Rejected } from '../../actions/DatabaseRequestActions';
+import { fetch_DashboardData_Fulfilled } from '../../actions/DatabaseRequestActions';
 
 /*
 Custom Components
 */
 import Footer          from '../footer/Footer.component';
-import DashboardWallet from './DashboardWallet/DashboardWallet.component';
 import DashboardStats  from './DashboardStats/DashboardStats.component';
 import DashboardCharts from './DashboardCharts/DashboardCharts.component';
 import ErrorPage       from '../ErrorPage/ErrorPage.component';
@@ -87,7 +86,6 @@ const DashboardRenderer = ({ modeFilter, currencyFilter }) => (
         <Grid className='dashboard-grid'>
             <Row>
                 <Col xs={12} lg={5} sm={8} className='dashboard-left'>
-                    <DashboardWallet className='wallet-div' />
                     <DashboardStats
                         modeFilter={modeFilter}
                         currencyFilter={currencyFilter}
@@ -121,7 +119,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    const TestServerURL = "http://localhost:3000/api/dashboard";
+    //const TestServerURL = "http://localhost:3000/api/dashboard";
     return {
         onStartLoadData: () => {
             dispatch((dispatch) => {

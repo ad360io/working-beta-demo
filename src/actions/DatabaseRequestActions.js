@@ -38,6 +38,26 @@ const fetch_MarketplaceData_Rejected = (err) => {
     }
 }
 
+const post_CreateListingData_Pending = () => {
+    return {
+        type: 'POST_CREATE_LISTING_DATA_PENDING'
+    }
+}
+
+const post_CreateListingeData_Fulfilled = (data) => {
+    return {
+        type: 'POST_CREATE_LISTING_DATA_FULFILLED',
+        payload: data
+    }
+}
+
+const post_CreateListingData_Rejected = (err) => {
+    return {
+        type: 'POST_CREATE_LISTING_DATA_REJECTED',
+        payload: err
+    }
+}
+
 
 export { 
     fetch_DashboardData_Pending, 
@@ -46,4 +66,7 @@ export {
     fetch_MarketplaceData_Pending, 
     fetch_MarketplaceData_Fulfilled, 
     fetch_MarketplaceData_Rejected,
+    post_CreateListingData_Pending,
+    post_CreateListingeData_Fulfilled,
+    post_CreateListingData_Rejected
 } 

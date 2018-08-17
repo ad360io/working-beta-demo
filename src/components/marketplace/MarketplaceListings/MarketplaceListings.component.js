@@ -2,7 +2,8 @@
 Core Libs
 */
 import React, { Component } from 'react';
-import { connect }          from 'react-redux';
+import { connect } from 'react-redux';
+import { createFilter } from 'react-search-input';
 
 /*
 Local CSS
@@ -22,7 +23,7 @@ import ListingCard from './ListingCard/ListingCard.component';
  */
 class MarketplaceListings extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.decideDataToDisplay = this.decideDataToDisplay.bind(this);
         this.decideTitle = this.decideTitle.bind(this);
@@ -34,10 +35,10 @@ class MarketplaceListings extends Component {
      * Publishers should see advertisements posted
      */
     decideDataToDisplay() {
-        if(this.props.modeFilter === 'Advertiser'){
+        if (this.props.modeFilter === 'Advertiser') {
             return this.props.contentSpaceListings;
-        }else{
-            return this.props.requestListings; 
+        } else {
+            return this.props.requestListings;
         }
     }
 
@@ -46,29 +47,34 @@ class MarketplaceListings extends Component {
      * Remember to ignore adFormatFilter if it is Show All
      * @param {Array} data The full array of listings waiting to be filtered
      */
-    filterDataWithProps(data){
-        if(this.props.modeFilter === 'Advertiser' ){
+    filterDataWithProps(data) {
+        const KEYS_TO_FILTER = ['name', 'owner_name', 'description', 'ad_format', 'medium'];
+        const keywordFilteredData = data.filter(createFilter(this.props.keywordFilter, KEYS_TO_FILTER));
+        if (this.props.modeFilter === 'Advertiser') {
             // we are looking at content spaces, with price and currency
-            return data.filter((listing)=>{
-                if(listing.currency.toUpperCase() === this.props.currencyFilter
+            return keywordFilteredData.filter((listing) => {
+                if (listing.currency.toUpperCase() === this.props.currencyFilter
                     && listing.price <= (this.props.budgetFilter * 1000)
-                    && (this.props.adFormatFilter === 'Show All' 
-                    || listing.type === this.props.adFormatFilter)){
+                    && (this.props.adFormatFilter === 'Show All' || listing.ad_format === this.props.adFormatFilter)
+                    && (this.props.mediumFilter === '' || listing.medium === this.props.mediumFilter)) {
                     return listing;
-                }else{
+                } else {
                     return null;
-                }})
-        }else{
+                }
+            })
+        } else {
             // we are looking at requests
-            return data.filter((listing)=>{
-                if(listing.currency.toUpperCase() === this.props.currencyFilter
-                    && (this.props.adFormatFilter === 'Show All' || listing.type === this.props.adFormatFilter)){
+            return keywordFilteredData.filter((listing) => {
+                if (listing.currency.toUpperCase() === this.props.currencyFilter
+                    && (this.props.adFormatFilter === 'Show All' || listing.ad_format === this.props.adFormatFilter)
+                    && (this.props.mediumFilter === '' || listing.medium === this.props.mediumFilter)) {
                     return listing;
-                }else{
+                } else {
                     return null;
-                }})
+                }
+            })
         }
-        
+
     }
 
     /**
@@ -76,20 +82,20 @@ class MarketplaceListings extends Component {
      * Purely for presentational purposes 
      * @param {Number} listingSize size of the listing array after filtering
      */
-    decideTitle(listingSize){
+    decideTitle(listingSize) {
         const listingType = (this.props.modeFilter === 'Advertiser' ? 'Content Spaces' : 'Contents');
-        const isEmpty = (listingSize > 0 ? '' : 'No ' )
+        const isEmpty = (listingSize > 0 ? '' : 'No ')
         return isEmpty + listingType + ' Available';
     }
 
     render() {
         const displayData = this.filterDataWithProps(this.decideDataToDisplay());
-        
+
         return <div className='marketplace-listings-container' ref={(ref) => this._containerDiv = ref}>
-            <h2 className='marketplace-title'>{this.decideTitle(displayData.length)}</h2>
+            <h3 className='marketplace-title'>{this.decideTitle(displayData.length)}</h3>
             {
-                displayData.map((listing, i)=>{
-                    return <ListingCard key={'listingCard'+i} listing={listing} modeFilter={this.props.modeFilter}/>
+                displayData.map((listing, i) => {
+                    return <ListingCard key={'listingCard' + i} listing={listing} modeFilter={this.props.modeFilter} />
                 })
             }
         </div>
@@ -98,12 +104,14 @@ class MarketplaceListings extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        currencyFilter       : state.MenuBarFilterReducer.currencyFilter,
-        modeFilter           : state.MenuBarFilterReducer.modeFilter,
-        budgetFilter         : state.MarketplaceFilterReducer.budgetFilter,
-        adFormatFilter       : state.MarketplaceFilterReducer.adFormatFilter,
-        contentSpaceListings : state.MarketplaceDataReducer.db.contentSpaceListings,
-        requestListings      : state.MarketplaceDataReducer.db.requestListings
+        currencyFilter: state.MenuBarFilterReducer.currencyFilter,
+        modeFilter: state.MenuBarFilterReducer.modeFilter,
+        budgetFilter: state.MarketplaceFilterReducer.budgetFilter,
+        adFormatFilter: state.MarketplaceFilterReducer.adFormatFilter,
+        mediumFilter: state.MarketplaceFilterReducer.mediumFilter,
+        contentSpaceListings: state.MarketplaceDataReducer.db.contentSpaceListings,
+        requestListings: state.MarketplaceDataReducer.db.requestListings,
+        keywordFilter: state.MarketplaceFilterReducer.keywordFilter,
     }
 }
 

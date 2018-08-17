@@ -1,0 +1,41 @@
+.logo_img {
+    width: 100px;
+    padding-top: 5px;
+}
+
+.logo-redirect {
+    grid-area: logo;
+    justify-self: center;
+}
+
+.menu-container {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 6;
+    padding: 0;
+    background-color: white;
+    border-bottom: 1px solid #03000041;
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: 5px 140px auto 0px 5px 137px 5px 64px 24px;
+    grid-template-areas: ". logo . nav-items . wallet . profile .";
+    align-items: stretch;
+    justify-content: stretch;
+}
+
+.menu-flex-for-profile-accessor {
+    grid-area: profile;
+}
+
+
+/*
+MEDIUM SCREEN
+*/
+
+@media only screen and (min-width: 768px) {
+    .menu-container {
+        grid-template-columns: 25px 140px auto 300px 32px 137px 12px 64px 32px;
+        grid-template-areas: ". logo . nav-items . wallet . profile . ";
+    }
+}

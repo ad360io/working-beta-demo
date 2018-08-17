@@ -12,6 +12,7 @@ import ProfileReducer           from './ProfileReducer';
 import DashboardDataReducer     from './DashboardDataReducer';
 import MarketplaceDataReducer   from './MarketplaceDataReducer';
 import CreateListingFormReducer from './CreateListingFormReducer';
+import CreateListingDataReducer from './CreateListingDataReducer';
 
 
 /**
@@ -25,7 +26,8 @@ const RootReducer = combineReducers({
     ProfileReducer,
     DashboardDataReducer,
     MarketplaceDataReducer,
-    CreateListingFormReducer
+    CreateListingFormReducer,
+    CreateListingDataReducer
 })
 
 

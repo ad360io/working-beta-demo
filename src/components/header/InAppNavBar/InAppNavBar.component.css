@@ -1,4 +1,4 @@
-.navbar-container {
+/* .navbar-container {
     position: fixed;
     top: 80px;
     animation-fill-mode: forwards;
@@ -7,43 +7,34 @@
     background: white;
     box-shadow: 0 4px 5px -2px gray;
     height: 50px;
-}
+} */
 
-.in-app-nav-item {
+/* .in-app-nav-item {
     color: #575757;
     display: inline-block;
     padding-top: 18px;
     padding-left: 60px;
 
     /* Remove NavItem style inherited from anchor tag */
-    text-decoration: none !important;
-}
+    /* text-decoration: none !important; */
+/* } */ 
 
-i {
+/* i {
     margin-right: 10px;
     margin-left: 10px;
-}
+} */
 
-.in-app-nav-item:hover, 
+/* .in-app-nav-item:hover, 
 .in-app-nav-item:focus,
 .selected-nav-item {
     color: #6f7dc9;
 }
-
-.noselect {
-    -webkit-touch-callout: none; /* iOS Safari */
-      -webkit-user-select: none; /* Safari */
-       -khtml-user-select: none; /* Konqueror HTML */
-         -moz-user-select: none; /* Firefox */
-          -ms-user-select: none; /* Internet Explorer/Edge */
-              user-select: none; /* Non-prefixed version, currently
-                                    supported by Chrome and Opera */
-  }
+*/
 
 /*
 FOR PHONES AND TABLETS
 */
-@media only screen and (max-width:768px){
+/* @media only screen and (max-width:768px){
     
     .nav-label {
         display: none;
@@ -55,4 +46,4 @@ FOR PHONES AND TABLETS
         padding-left: 8%;
     }
 
-}
+} */

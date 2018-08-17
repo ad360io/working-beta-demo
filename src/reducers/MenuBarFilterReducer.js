@@ -1,6 +1,6 @@
 /** DEFAULT STATE */
 const defaultState = {
-    currencyFilter : 'EQC',         
+    currencyFilter : 'XQC',         
     modeFilter     : 'Advertiser'   
 }
 

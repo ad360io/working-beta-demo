@@ -127,7 +127,7 @@ class DashboardCharts extends Component {
                 case 0:
                     return 'Content Impressions Performance';
                 case 1:
-                    return 'Advertiser Revenue Performance';
+                    return 'Content Revenue Performance';
                 default:
                     return 'Unknown Key';
             }

@@ -19,7 +19,7 @@ import Divider            from 'material-ui/Divider';
 /*
 Local CSS
 */
-import './DashboardStats.component.css'
+import './DashboardStats.component.css';
 
 
 /**

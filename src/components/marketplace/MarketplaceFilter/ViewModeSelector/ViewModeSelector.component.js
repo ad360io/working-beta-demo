@@ -14,6 +14,8 @@ Action
 */
 import { setViewMode } from '../../../../actions/MarketplaceActions';
 
+import './ViewModeSelector.component.css';
+
 
 class ViewModeSelector extends Component {
     render() {
@@ -29,14 +31,14 @@ class ViewModeSelector extends Component {
                     active={this.props.viewModeFilter === 'Listing'}
                     onClick={()=>this.props.onViewModeClick('Listing')}
                 >
-                    <i className="fas fa-align-justify"></i>Listing
+                    <i className="fas fa-align-justify view-mode-icon"></i>Listing
                 </Button>
                 <Button 
                     href="#"
                     active={this.props.viewModeFilter === 'Grid'}
                     onClick={()=>this.props.onViewModeClick('Grid')}
                 >
-                    <i className="fas fa-th-large"></i>Grid
+                    <i className="fas fa-th-large view-mode-icon"></i>Grid
                 </Button>
             </ButtonGroup>
         </div>

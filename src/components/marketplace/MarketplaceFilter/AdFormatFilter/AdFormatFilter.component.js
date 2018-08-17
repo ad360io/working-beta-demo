@@ -12,19 +12,26 @@ import './AdFormatFilter.component.css';
 /*
 Actions
 */
-import { setAdFormat } from '../../../../actions/MarketplaceActions';
+import { setAdFormat, setMedium } from '../../../../actions/MarketplaceActions';
 
 /*
 React Bootstrap
 */
 import { Button, SplitButton, MenuItem } from 'react-bootstrap';
 
+const bcMediumStringList = [ 'Written Piece',    'Audio Piece',      'Video Piece', 'Email',
+                             'Webinar',          'Other',                                      ];
+const ipMediumStringList = [ 'Tweet',            'Instagram',        'Twitch',      'Youtube',
+                             'Facebook',         'Twitter',          'NicoNico',    'Other'    ];
+const spMediumStringList = [ 'Event',            'Individual',       'Website',     'Artistic Creation',
+                             'Email Newsletter',  'Other'                                      ];
+const pjMediumStringList = [ 'Written Piece',    'Audio Piece',      'Video Piece', 'Other'    ];
 
-const AdFormatFilter = ({onAdFormatClick, adFormatFilter}) => (
+const AdFormatFilter = ({ onAdFormatClick, adFormatFilter, mediumFilter, onMediumClick }) => (
     <div>
         <Button
             className='btn-marketing-type'
-            onClick={() => {onAdFormatClick('Show All')}}
+            onClick={() => { onAdFormatClick('Show All') }}
             active={adFormatFilter === 'Show All'}
         >
             Show All
@@ -37,9 +44,11 @@ const AdFormatFilter = ({onAdFormatClick, adFormatFilter}) => (
             onClick={() => onAdFormatClick('Branded Content')}
             active={adFormatFilter === 'Branded Content'}
         >
-            <MenuItem >Written Piece</MenuItem>
-            <MenuItem >Audio Piece</MenuItem>
-            <MenuItem >Video Piece</MenuItem>
+            {
+                bcMediumStringList.map((bcMedium, key) => {
+                    return MediumFilterMenuItem('Branded Content', bcMedium, mediumFilter, onMediumClick, key);
+                })
+            }
         </SplitButton>
         <SplitButton
             className='split-btn-marketing-type'
@@ -49,21 +58,26 @@ const AdFormatFilter = ({onAdFormatClick, adFormatFilter}) => (
             onClick={() => onAdFormatClick('Influencer Post')}
             active={adFormatFilter === 'Influencer Post'}
         >
-            <MenuItem >Tweet</MenuItem>
-            <MenuItem >Instagram</MenuItem>
-            <MenuItem >Twitch</MenuItem>
-            <MenuItem >Youtube</MenuItem>
-            <MenuItem >Facebook</MenuItem>
-            <MenuItem >Twitter</MenuItem>
-            <MenuItem >NicoNico</MenuItem>
+            {
+                ipMediumStringList.map((ipMedium, key) => {
+                    return MediumFilterMenuItem('Influencer Post', ipMedium, mediumFilter, onMediumClick, key);
+                })
+            }
         </SplitButton>
-        <Button
-            className='btn-marketing-type'
+        <SplitButton
+            className='split-btn-marketing-type'
+            title='Sponsorship'
+            id='sponsorship-menu'
+            pullRight
             onClick={() => onAdFormatClick('Sponsorship')}
             active={adFormatFilter === 'Sponsorship'}
         >
-            Sponsorship
-        </Button>
+            {
+                spMediumStringList.map((spMedium, key) => {
+                    return MediumFilterMenuItem('Sponsorship', spMedium, mediumFilter, onMediumClick, key);
+                })
+            }
+        </SplitButton>
         <SplitButton
             className='split-btn-marketing-type'
             title='Patron Journalism'
@@ -72,24 +86,41 @@ const AdFormatFilter = ({onAdFormatClick, adFormatFilter}) => (
             onClick={() => onAdFormatClick('Patron Journalism')}
             active={adFormatFilter === 'Patron Journalism'}
         >
-            <MenuItem >Written Piece</MenuItem>
-            <MenuItem >Audio Piece</MenuItem>
-            <MenuItem >Video Piece</MenuItem>
+            {
+                pjMediumStringList.map((pjMedium, key) => {
+                    return MediumFilterMenuItem('Patron Journalism', pjMedium, mediumFilter, onMediumClick, key);
+                })
+            }
         </SplitButton>
     </div>
+)
+
+const MediumFilterMenuItem = (adFormat, medium, mediumFilter, onMediumClick, key) => (
+    <MenuItem
+        className='medium-menu-item'
+        key={`${adFormat}-${medium}-menuitem-${key}`}
+        onClick={() => onMediumClick(adFormat, medium)}
+        active={mediumFilter === medium}
+    >
+        {medium}
+    </MenuItem>
 )
 
 const mapStateToProps = (state) => {
     return {
         adFormatFilter: state.MarketplaceFilterReducer.adFormatFilter,
+        mediumFilter: state.MarketplaceFilterReducer.mediumFilter
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         onAdFormatClick: (adFormat) => {
-            dispatch(setAdFormat(adFormat))
+            dispatch(setAdFormat(adFormat, dispatch))
         },
+        onMediumClick: (adFormat, medium) => {
+            dispatch(setMedium(medium, dispatch, adFormat));
+        }
     }
 }
 

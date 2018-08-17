@@ -2,6 +2,7 @@
 Core Libs
 */
 import React from 'react';
+import { connect } from 'react-redux';
 
 /*
 Local CSS
@@ -9,21 +10,48 @@ Local CSS
 import './ModeSelector.component.css';
 
 /*
-React Bootstrap Component
+React Bootstrap
 */
-import { DropdownButton, MenuItem } from 'react-bootstrap'; 
+import { ButtonGroup, Button } from 'react-bootstrap';
+import { setMode } from '../../../../actions/HeaderActions';
 
 
 const ModeSelector = ({ modeFilter, onClick }) => (
-    <DropdownButton id='mode-selector' bsSize='large' className='mode-selector' title={modeFilter}>
-        <MenuItem onClick={() => onClick('Advertiser')} className="mode-item">
-            Advertiser
-        </MenuItem>
-        <MenuItem onClick={() => onClick('Publisher')} className="mode-item">
-            Publisher
-        </MenuItem>
-    </DropdownButton>
+    
+        <ButtonGroup bsSize='small' className='mode-selector'>
+            <Button
+                active={modeFilter === 'Advertiser'}
+                onClick={() => onClick('Advertiser')}
+                style={{width: 98}}
+            >
+                an advertiser
+            </Button>
+            <Button
+                active={modeFilter === 'Publisher'}
+                onClick={() => onClick('Publisher')}
+                style={{width: 98}}
+            >
+                a publisher
+            </Button>
+        </ButtonGroup>
+    
 )
 
+const mapStateToProps = (state) => {
+    return {
+        modeFilter: state.MenuBarFilterReducer.modeFilter
+    }
+}
 
-export default ModeSelector;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onClick: (mode) => {
+            dispatch(setMode(mode))
+        },
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ModeSelector);

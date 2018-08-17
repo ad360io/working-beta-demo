@@ -3,12 +3,12 @@ Core Libs
 */
 import React, { Component } from 'react';
 import { withWindowWidthListener } from '../../../../ResponsiveComponent/ResponsiveComponent';
-import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';
 
 /*
 React Bootstrap
 */
-import { ButtonGroup } from 'react-bootstrap';
+//import { ButtonGroup } from 'react-bootstrap';
 
 
 class SelectButtonGroup extends Component {
@@ -22,8 +22,8 @@ class SelectButtonGroup extends Component {
     }
 }
 
-SelectButtonGroup.propTypes = {
-    stringList: PropTypes.arrayOf(PropTypes.string).isRequired
-}
+// SelectButtonGroup.propTypes = {
+//     stringList: PropTypes.arrayOf(PropTypes.string).isRequired
+// }
 
 export default withWindowWidthListener(SelectButtonGroup);

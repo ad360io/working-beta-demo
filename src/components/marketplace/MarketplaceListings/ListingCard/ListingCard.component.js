@@ -254,11 +254,10 @@ const GridCardRenderer = ({
                 }}
             >
                 <div className='poster-tag'>{contactInfo} </div>
-                <div className='price-tag'>{priceTag}</div>)
-                    
+                <div className='price-tag'>{priceTag}</div>)   
                 <CardTitle 
                     title={title} 
-                    subtitle={'Posted on: '+ date_added} 
+                    subtitle={'Posted on: '+ date_added.slice(0,10)} 
                     style={{paddingBottom:'0px'}}/>
                 <img src={placeholderImage} className='grid-img' alt='listing-img'/>
                 <CardText className='grid-msg-container'>
@@ -295,7 +294,7 @@ const ListingCardRenderer = ({
             
         <CardTitle 
             title={title} 
-            subtitle={'Posted on: '+ date_added} 
+            subtitle={'Posted on: '+ date_added.slice(0,10)} 
             className='listing-card-title'
             style={{paddingBottom:'0px'}}/>
         <img src={placeholderImage} className='listing-img' alt='listing-img'/>

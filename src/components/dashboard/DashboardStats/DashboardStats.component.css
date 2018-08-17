@@ -4,10 +4,6 @@
     padding-top: 0px !important;
 }
 
-.stats-container {
-    margin-top: 2%;
-}
-
 .stats-title{
     margin-left: 10%;
     padding-top: 4%;
@@ -23,7 +19,6 @@ FOR DESKTOP
     .stats-container {
         width: 20%;
         min-width: 280px;
-        margin-top: 5%;
     }
 
 }

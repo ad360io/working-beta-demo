@@ -2,38 +2,56 @@
 Core Libs
 */
 import React from 'react';
+import { connect } from 'react-redux';
 
 /*
 Local CSS
 */
 import './CurrencySelector.component.css';
-import eth_logo    from '../../../../assets/images/Ethereum_logo.png';
-import nem_logo    from '../../../../assets/images/NEM_logo.png';
 
 /*
 React Bootstrap
 */
 import { ButtonGroup, Button } from 'react-bootstrap';
+import { setCurrency } from '../../../../actions/HeaderActions';
 
 
 const CurrencySelector = ({ currencyFilter, onClick }) => (
     
-        <ButtonGroup bsSize='large' className='currency-selector'>
-            <Button
-                active={currencyFilter === 'EQC'}
-                onClick={() => onClick('EQC')}
-            >
-                <img src={eth_logo} className='currency-logo' alt='eth-logo' />EQC
-            </Button>
+        <ButtonGroup bsSize='small' className='currency-selector'>
             <Button
                 active={currencyFilter === 'XQC'}
                 onClick={() => onClick('XQC')}
+                style={{width: 98}}
             >
-                <img src={nem_logo} className='currency-logo' alt='nem-logo' />XQC
+                XQC
+            </Button>
+            <Button
+                active={currencyFilter === 'EQC'}
+                onClick={() => onClick('EQC')}
+                style={{width: 98}}
+            >
+                EQC
             </Button>
         </ButtonGroup>
     
 )
 
+const mapStateToProps = (state) => {
+    return {
+        currencyFilter: state.MenuBarFilterReducer.currencyFilter
+    }
+}
 
-export default CurrencySelector;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onClick: (currency) => {
+            dispatch(setCurrency(currency))
+        },
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CurrencySelector);

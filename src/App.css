@@ -1,7 +1,6 @@
 .app-container {
-    background: #f6f6f6;
+    background: white;
     width: 100%;
-    overflow-x: hidden;
     overflow-y: auto;
 }
 
@@ -51,7 +50,7 @@
     }
 }
 
-@keyframes stats-indicator-translate-to-green{
+@keyframes stats-indicator-translate-to-green {
     from {
         width: 1%;
     }
